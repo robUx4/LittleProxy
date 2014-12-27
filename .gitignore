@@ -16,3 +16,4 @@ LittleProxy.pro
 /bin
 *.jks
 performance/site/
+/build

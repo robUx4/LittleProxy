@@ -15,7 +15,7 @@ import io.netty.channel.group.ChannelGroupFuture;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.channel.udt.nio.NioUdtProvider;
+// Android compilation import io.netty.channel.udt.nio.NioUdtProvider;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
 import java.io.File;
@@ -303,12 +303,14 @@ public class DefaultHttpProxyServer implements HttpProxyServer {
                 }
             });
             break;
+        /* Android compilation
         case UDT:
             LOG.info("Proxy listening with UDT transport");
             serverBootstrap.channelFactory(NioUdtProvider.BYTE_ACCEPTOR)
                     .option(ChannelOption.SO_BACKLOG, 10)
                     .option(ChannelOption.SO_REUSEADDR, true);
             break;
+            */
         default:
             throw new UnknownTransportProtocolError(transportProtocol);
         }
@@ -450,9 +452,11 @@ public class DefaultHttpProxyServer implements HttpProxyServer {
             case TCP:
                 selectorProvider = SelectorProvider.provider();
                 break;
+            /* Android compilation
             case UDT:
                 selectorProvider = NioUdtProvider.BYTE_PROVIDER;
                 break;
+                */
             default:
                 throw new UnknownTransportProtocolError(transportProtocol);
             }

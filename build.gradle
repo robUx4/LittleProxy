@@ -1,0 +1,57 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
+    buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
+
+    defaultConfig {
+        minSdkVersion Math.max(15, Integer.parseInt(ANDROID_BUILD_MIN_SDK_VERSION))
+        targetSdkVersion Integer.parseInt(project.ANDROID_BUILD_TARGET_SDK_VERSION)
+        versionCode 1
+        versionName "1.0"
+    }
+}
+
+dependencies {
+    def useLocalNettyBuffer = false
+    def useLocalNettyTransport = false
+
+    def localNettyBuffer = ':netty-buffer'
+    def localNettyTransport = ':netty-transport'
+
+    allprojects {
+        rootProject.allprojects.project.each {
+            if (it.path == localNettyBuffer) {
+                useLocalNettyBuffer = true
+            }
+            else if (it.path == localNettyTransport) {
+                useLocalNettyTransport = true
+            }
+        }
+    }
+
+    compile ('io.netty:netty-codec-http:4.1.+') {
+        if (useLocalNettyBuffer) {
+            exclude group: 'io.netty', module: 'netty-buffer'
+        }
+        if (useLocalNettyTransport) {
+            exclude group: 'io.netty', module: 'netty-transport'
+        }
+    }
+
+    if (false)
+    compile ('io.netty:netty-transport-udt:4.1.+') {
+        if (useLocalNettyBuffer) {
+            exclude group: 'io.netty', module: 'netty-buffer'
+        }
+        if (useLocalNettyTransport) {
+            exclude group: 'io.netty', module: 'netty-transport'
+        }
+    }
+
+    compile 'org.apache.commons:commons-lang3:3.1'
+    compile 'org.apache.commons:commons-io:1.3.2'
+    compile 'org.apache.logging.log4j:log4j:2.0.2'
+    //compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.0.2'
+    compile 'org.littleshoot:dnssec4j:0.1.6'
+}
